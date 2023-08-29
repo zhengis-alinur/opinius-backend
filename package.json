@@ -1,0 +1,44 @@
+{
+	"name": "server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"type": "commonjs",
+	"scripts": {
+		"start": "nodemon",
+		"lint": "eslint ./src/**/*.ts",
+		"format": "eslint ./src/**/*.ts --fix"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/cookie-parser": "^1.4.3",
+		"@types/express": "^4.17.17",
+		"@types/http-errors": "^2.0.1",
+		"@types/node": "^20.5.1",
+		"@typescript-eslint/eslint-plugin": "^6.4.0",
+		"@typescript-eslint/parser": "^6.4.0",
+		"eslint": "^8.47.0",
+		"eslint-config-prettier": "^9.0.0",
+		"eslint-plugin-import": "^2.28.1",
+		"eslint-plugin-prettier": "^5.0.0",
+		"nodemon": "^3.0.1",
+		"prettier": "^3.0.2",
+		"sequelize": "^6.32.1",
+		"ts-node": "^10.9.1",
+		"typescript": "^5.1.6"
+	},
+	"dependencies": {
+		"cookie-parser": "^1.4.6",
+		"cors": "^2.8.5",
+		"dotenv": "^16.3.1",
+		"express": "^4.18.2",
+		"mongoose": "^7.4.3",
+		"mysql2": "^3.6.0",
+		"reflect-metadata": "^0.1.13",
+		"socket-controllers": "^0.2.0",
+		"socket.io": "^4.7.2",
+		"typedi": "^0.10.0"
+	}
+}
