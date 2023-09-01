@@ -6,6 +6,7 @@
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"baseUrl": "src/",
+		"noImplicitReturns": false,
 		"typeRoots": ["./src/types", "./node_modules/@types"],
 		"resolveJsonModule": true,
 		"outDir": "./dist",
@@ -14,7 +15,6 @@
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
-		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
 		"skipLibCheck": true
 	},

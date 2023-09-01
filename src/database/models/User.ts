@@ -1,8 +1,8 @@
 import { DataTypes, ModelDefined } from 'sequelize';
 import sequelize from '..';
 
-interface UserAttributes {
-	user_role_id: number;
+export interface UserAttributes {
+	roleId: number;
 	username: string;
 	firstName: string;
 	lastName: string;
@@ -11,11 +11,12 @@ interface UserAttributes {
 }
 
 const User: ModelDefined<UserAttributes, UserAttributes> = sequelize.define('user', {
-	username: DataTypes.STRING,
-	firstName: DataTypes.STRING,
-	lastName: DataTypes.STRING,
-	email: DataTypes.STRING,
-	password: DataTypes.STRING
+	roleId: { type: DataTypes.INTEGER, allowNull: false },
+	username: { type: DataTypes.STRING, allowNull: false },
+	firstName: { type: DataTypes.STRING, allowNull: false },
+	lastName: { type: DataTypes.STRING, allowNull: false },
+	email: { type: DataTypes.STRING, allowNull: false, unique: true },
+	password: { type: DataTypes.STRING, allowNull: false }
 });
 
 export default User;

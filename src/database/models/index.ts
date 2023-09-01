@@ -6,8 +6,7 @@ import Category from './Category';
 import Rating from './Rating';
 import Tag from './Tag';
 
-Category.belongsToMany(Review, { through: 'review_categories' });
-Review.belongsToMany(Category, { through: 'review_categories' });
+Review.belongsTo(Category, { foreignKey: 'categoryId', as: 'category' });
 
 Tag.belongsToMany(Review, { through: 'review_tags' });
 Review.belongsToMany(Tag, { through: 'review_tags' });
@@ -30,5 +29,4 @@ Comment.belongsTo(User);
 User.hasMany(Rating);
 Rating.belongsTo(User);
 
-User.belongsToMany(Role, { through: 'user_roles' });
-Role.belongsToMany(User, { through: 'user_roles' });
+User.belongsTo(Role, { foreignKey: 'roleId', as: 'role' });

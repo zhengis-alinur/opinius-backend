@@ -6,9 +6,10 @@ interface RoleAttributes {
 }
 
 const Role: ModelDefined<RoleAttributes, RoleAttributes> = sequelize.define('roles', {
-	role: {
+	name: {
 		type: DataTypes.STRING,
-		allowNull: false
+		allowNull: false,
+		unique: true
 	}
 });
 

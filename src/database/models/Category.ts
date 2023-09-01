@@ -6,9 +6,10 @@ interface CategoryAttributes {
 }
 
 const Category: ModelDefined<CategoryAttributes, CategoryAttributes> = sequelize.define('categories', {
-	category: {
+	name: {
 		type: DataTypes.STRING,
-		allowNull: false
+		allowNull: false,
+		unique: true
 	}
 });
 
