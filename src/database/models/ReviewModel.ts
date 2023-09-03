@@ -2,9 +2,9 @@ import { DataTypes, ModelDefined } from 'sequelize';
 import sequelize from '..';
 
 interface ReviewAttributes {
+	id: number;
 	categoryId: number;
 	userId: number;
-	category_id: number;
 	title: string;
 	objectName: string;
 	text: string;

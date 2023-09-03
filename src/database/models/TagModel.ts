@@ -1,8 +1,9 @@
-import { DataTypes, ModelDefined } from 'sequelize';
+import { DataTypes, Model, ModelDefined } from 'sequelize';
 import sequelize from '..';
 
 interface TagAttributes {
-	tag: string;
+	id: number;
+	name: string;
 }
 const Tag: ModelDefined<TagAttributes, TagAttributes> = sequelize.define('tags', {
 	name: {
@@ -11,5 +12,7 @@ const Tag: ModelDefined<TagAttributes, TagAttributes> = sequelize.define('tags',
 		unique: true
 	}
 });
+
+export type LikeModelType = Model<TagAttributes, TagAttributes>;
 
 export default Tag;

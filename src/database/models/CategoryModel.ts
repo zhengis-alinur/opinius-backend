@@ -2,7 +2,7 @@ import { DataTypes, ModelDefined } from 'sequelize';
 import sequelize from '..';
 
 interface CategoryAttributes {
-	category: string;
+	name: string;
 }
 
 const Category: ModelDefined<CategoryAttributes, CategoryAttributes> = sequelize.define('categories', {

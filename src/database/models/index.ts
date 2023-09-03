@@ -1,10 +1,12 @@
-import User from './User';
-import Role from './Role';
-import Review from './Review';
-import Comment from './Comment';
-import Category from './Category';
-import Rating from './Rating';
-import Tag from './Tag';
+import User from './UserModel';
+import Role from './RoleModel';
+import Review from './ReviewModel';
+import Comment from './CommentModel';
+import Category from './CategoryModel';
+import Rating from './RatingModel';
+import Tag from './TagModel';
+import './LikeModel';
+import './ReviewTagsModel';
 
 Review.belongsTo(Category, { foreignKey: 'categoryId', as: 'category' });
 

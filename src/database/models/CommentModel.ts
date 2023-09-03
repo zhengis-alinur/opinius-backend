@@ -2,11 +2,13 @@ import { DataTypes, ModelDefined } from 'sequelize';
 import sequelize from '..';
 
 interface CommentAttributes {
-	text: string;
+	comment: string;
+	reviewId: number;
+	userId: number;
 }
 
 const Comment: ModelDefined<CommentAttributes, CommentAttributes> = sequelize.define('comments', {
-	text: {
+	comment: {
 		type: DataTypes.STRING,
 		allowNull: false
 	}
