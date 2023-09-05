@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { getSessionUserId } from '../utils';
-import { Like, Rating, Comment } from '../types/Review';
+import { Like, Rating, Comment, Review } from '../types/Review';
 import reviewService from '../services/review.service';
 
 const getById = async (req: Request, res: Response, next: NextFunction) => {
@@ -102,7 +102,6 @@ const rate = async (req: Request, res: Response, next: NextFunction) => {
 const comment = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const { reviewId, comment } = req.body as Comment;
-		console.log(req.body);
 		const userId = getSessionUserId(req);
 
 		const review = await reviewService.findById(reviewId);
@@ -119,11 +118,56 @@ const comment = async (req: Request, res: Response, next: NextFunction) => {
 	}
 };
 
+const comments = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const reviewId = parseInt(req.query.id as string);
+		const comments = await reviewService.getCommentsById(reviewId);
+		res.json(comments);
+	} catch (error) {
+		next(error);
+	}
+};
+const likes = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const reviewId = parseInt(req.query.id as string);
+		const likes = await reviewService.getLikesById(reviewId);
+		res.json(likes);
+	} catch (error) {
+		next(error);
+	}
+};
+const ratings = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const reviewId = parseInt(req.query.id as string);
+		const raitings = await reviewService.getRaitingsById(reviewId);
+		res.json(raitings);
+	} catch (error) {
+		next(error);
+	}
+};
+
+const update = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { id, ...updatedData } = req.body as Review;
+		const updated = reviewService.update(id, updatedData);
+		if (!updated) {
+			return res.status(404).json('Review did not updated');
+		}
+		res.json('updated');
+	} catch (error) {
+		next(error);
+	}
+};
+
 export default {
+	create,
+	update,
 	getAll,
 	getById,
-	create,
 	like,
 	rate,
-	comment
+	comment,
+	comments,
+	likes,
+	ratings
 };

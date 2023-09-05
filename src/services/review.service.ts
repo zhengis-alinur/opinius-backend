@@ -28,6 +28,15 @@ const findById = async (reviewId: number) => {
 	return { ...review, comments, likes, ratings };
 };
 
+const update = async (id: number, updateData: Partial<Review>) => {
+	const review = await ReviewModel.findByPk(id);
+	let updatedReview;
+	if (review) {
+		updatedReview = await review?.update(updateData);
+	}
+	return updatedReview;
+};
+
 const findLikeByUserId = (like: Pick<Like, 'reviewId' | 'userId'>) =>
 	LikeModel.findOne({
 		where: like
@@ -78,6 +87,10 @@ const setTags = async (tags: string[], reviewId: number) => {
 	}
 };
 
+const getLikesById = (reviewId: number) => LikeModel.findAll({ where: { reviewId } });
+const getCommentsById = (reviewId: number) => CommentModel.findAll({ where: { reviewId } });
+const getRaitingsById = (reviewId: number) => RatingModel.findAll({ where: { reviewId } });
+
 export default {
 	findById,
 	getAll,
@@ -89,5 +102,9 @@ export default {
 	setTags,
 	findLikeByUserId,
 	findRatingByUserId,
-	findCommentsToReview
+	findCommentsToReview,
+	getLikesById,
+	getCommentsById,
+	getRaitingsById,
+	update
 };

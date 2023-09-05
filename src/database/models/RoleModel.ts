@@ -2,7 +2,7 @@ import { DataTypes, ModelDefined } from 'sequelize';
 import sequelize from '..';
 
 interface RoleAttributes {
-	role: string;
+	name: string;
 }
 
 const Role: ModelDefined<RoleAttributes, RoleAttributes> = sequelize.define('roles', {

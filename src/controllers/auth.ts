@@ -3,14 +3,21 @@ import { validateRequest } from '../utils/validation';
 import userService from '../services/user.service';
 import passport from 'passport';
 import { User } from 'types/User';
+import jwt from 'jsonwebtoken';
 
 const login = (req: Request, res: Response, next: NextFunction) => {
-	passport.authenticate('local')(req, res, next);
-};
-const loginSuccess = async (req: Request, res: Response) => {
-	res.status(200).json({
-		message: 'Authenticated successfully'
-	});
+	passport.authenticate('login', async (err: Error, user: User, { message }: { message: string }) => {
+		if (err || !user) {
+			res.status(400);
+			return next(new Error(message));
+		}
+		req.login(user, { session: false }, async (error) => {
+			if (error) return next(error);
+			const { id, email } = user;
+			const token = jwt.sign({ id, email }, String(process.env.JWT_SECRET), { expiresIn: '1d' });
+			return res.json({ message, user, token });
+		});
+	})(req, res, next);
 };
 
 const logout = (req: Request, res: Response, next: NextFunction) => {
@@ -35,7 +42,7 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 export default {
-	login: [validateRequest('login'), login, loginSuccess],
+	login: [validateRequest('login'), login],
 	logout,
 	signup: [validateRequest('signup'), signup]
 };

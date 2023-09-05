@@ -1,25 +1,52 @@
 import passport from 'passport';
 import bcrypt from 'bcrypt';
 import { Strategy as LocalStrategy } from 'passport-local';
+import JWTPassport from 'passport-jwt';
+
+const JwtStrategy = JWTPassport.Strategy;
+const ExtractJwt = JWTPassport.ExtractJwt;
 
 import userService from '../services/user.service';
 
 passport.use(
+	'login',
 	new LocalStrategy({ usernameField: 'email', passwordField: 'password' }, async (email, password, done) => {
 		try {
 			const user = await userService.findUserByEmail(email);
 			if (!user) {
-				return done(null, false);
+				return done(null, false, { message: 'Wrong email or password' });
 			}
 			if (await bcrypt.compare(password, user.password)) {
-				done(null, user);
+				return done(null, user, { message: 'Logged in Successfully' });
 			} else {
-				return done(null, false);
+				return done(null, false, { message: 'Wrong email or password' });
 			}
 		} catch (error) {
 			return done(error);
 		}
 	})
+);
+
+passport.use(
+	new JwtStrategy(
+		{
+			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+			secretOrKey: String(process.env.JWT_SECRET)
+		},
+		async (jwt_payload, done) => {
+			try {
+				console.log(jwt_payload);
+				const user = await userService.findUserByEmail(jwt_payload.email);
+				if (user) {
+					return done(null, true);
+				} else {
+					return done(null, false);
+				}
+			} catch (error) {
+				return done(error, false);
+			}
+		}
+	)
 );
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
