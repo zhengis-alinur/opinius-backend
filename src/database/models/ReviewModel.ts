@@ -14,6 +14,7 @@ interface ReviewAttributes {
 
 const Review: ModelDefined<ReviewAttributes, ReviewAttributes> = sequelize.define('reviews', {
 	categoryId: DataTypes.INTEGER,
+	userId: DataTypes.INTEGER,
 	title: DataTypes.STRING,
 	objectName: DataTypes.STRING,
 	text: DataTypes.STRING,

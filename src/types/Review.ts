@@ -3,6 +3,7 @@ export type Review = {
 	categoryId: number;
 	userId: number;
 	title: string;
+	img: string;
 	objectName: string;
 	text: string;
 	grade: number;

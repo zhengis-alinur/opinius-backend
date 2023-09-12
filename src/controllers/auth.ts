@@ -11,7 +11,7 @@ const login = (req: Request, res: Response, next: NextFunction) => {
 			res.status(400);
 			return next(new Error(message));
 		}
-		req.login(user, { session: false }, async (error) => {
+		req.login({ ...user }, { session: false }, async (error) => {
 			if (error) return next(error);
 			const { id, email } = user;
 			const token = jwt.sign({ id, email }, String(process.env.JWT_SECRET), { expiresIn: '1d' });

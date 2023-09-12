@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import sequelize from '..';
 
 interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>> {
+	id: number;
 	roleId: number;
 	username: string;
 	firstName: string;
@@ -12,6 +13,7 @@ interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttri
 }
 
 const UserModel = sequelize.define<UserModel>('user', {
+	id: { type: DataTypes.INTEGER, allowNull: false, autoIncrement: true, primaryKey: true },
 	roleId: { type: DataTypes.INTEGER, allowNull: false },
 	username: { type: DataTypes.STRING, allowNull: false },
 	firstName: { type: DataTypes.STRING, allowNull: false },

@@ -5,6 +5,7 @@ import { Comment, Like, Rating, Review } from '../types/Review';
 import CommentModel from '../database/models/CommentModel';
 import TagModel from '../database/models/TagModel';
 import ReviewTagsModel from '../database/models/ReviewTagsModel';
+import UserModel from '../database/models/UserModel';
 
 const create = (review: Review) => ReviewModel.create(review);
 
@@ -62,7 +63,12 @@ const like = (like: Pick<Like, 'reviewId' | 'userId'>) => LikeModel.create(like)
 const rate = (rating: Pick<Rating, 'reviewId' | 'userId' | 'rating'>) => RatingModel.create(rating);
 const comment = (comment: Pick<Comment, 'reviewId' | 'userId' | 'comment'>) => CommentModel.create(comment);
 
-const getAll = () => ReviewModel.findAll({});
+const getAll = () =>
+	ReviewModel.findAll({
+		include: {
+			model: UserModel
+		}
+	});
 
 const setTags = async (tags: string[], reviewId: number) => {
 	const tagIds: number[] = [];

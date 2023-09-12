@@ -11,6 +11,16 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
 	}
 };
 
+const getById = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { id } = req.query as { id: string };
+		const users = await userService.getById(parseInt(id));
+		res.json(users);
+	} catch (error) {
+		next(error);
+	}
+};
+
 const comments = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const userId = parseInt(req.query.id as string);
@@ -26,6 +36,19 @@ const likes = async (req: Request, res: Response, next: NextFunction) => {
 		const userId = parseInt(req.query.id as string);
 		const likes = await userService.getLikesById(userId);
 		res.json(likes);
+	} catch (error) {
+		next(error);
+	}
+};
+
+const stats = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const userId = parseInt(req.query.id as string);
+		const likes = (await userService.getLikesById(userId)).length;
+		const comments = (await userService.getCommentsById(userId)).length;
+		const ratings = (await userService.getRaitingsById(userId)).length;
+		const reviews = (await userService.getReviewsById(userId)).length;
+		res.json({ reviews, likes, comments, ratings });
 	} catch (error) {
 		next(error);
 	}
@@ -56,5 +79,7 @@ export default {
 	comments,
 	likes,
 	ratings,
-	reviews
+	reviews,
+	getById,
+	stats
 };

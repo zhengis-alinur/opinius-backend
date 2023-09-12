@@ -10,6 +10,7 @@ const create = async (user: User) => {
 };
 
 const findUserByEmail = (email: string) => UserModel.findOne({ where: { email } });
+const getById = (id: number) => UserModel.findOne({ where: { id } });
 
 const getLikesById = (userId: number) => LikeModel.findAll({ where: { userId } });
 const getReviewsById = (userId: number) => ReviewModel.findAll({ where: { userId } });
@@ -18,6 +19,7 @@ const getRaitingsById = (userId: number) => RatingModel.findAll({ where: { userI
 
 export default {
 	create,
+	getById,
 	findUserByEmail,
 	getLikesById,
 	getReviewsById,

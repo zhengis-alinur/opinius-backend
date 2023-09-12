@@ -3,12 +3,16 @@ import { NextFunction, Request, Response } from 'express';
 import { getSessionUserId } from '../utils';
 import { Like, Rating, Comment, Review } from '../types/Review';
 import reviewService from '../services/review.service';
+import userService from '../services/user.service';
 
 const getById = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const reviewId = parseInt(req.query.id as string);
 		const review = await reviewService.findById(reviewId);
-		res.json(review);
+		if (review && review.dataValues?.userId) {
+			const user = await userService.getById(review.dataValues?.userId);
+			res.json({ review: { ...review, ...review.dataValues }, user });
+		}
 	} catch (error) {
 		next(error);
 	}

@@ -35,10 +35,9 @@ passport.use(
 		},
 		async (jwt_payload, done) => {
 			try {
-				console.log(jwt_payload);
 				const user = await userService.findUserByEmail(jwt_payload.email);
 				if (user) {
-					return done(null, true);
+					return done(null, user);
 				} else {
 					return done(null, false);
 				}
