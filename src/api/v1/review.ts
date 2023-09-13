@@ -15,6 +15,7 @@ router.post('/rate', reviewController.rate);
 router.post('/comment', reviewController.comment);
 
 router.get('/likes', reviewController.likes);
+router.get('/like', reviewController.getLike);
 router.get('/ratings', reviewController.ratings);
 router.get('/rating', reviewController.getRating);
 router.get('/comments', reviewController.comments);

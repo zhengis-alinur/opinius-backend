@@ -154,9 +154,36 @@ const ratings = async (req: Request, res: Response, next: NextFunction) => {
 const getRating = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const reviewId = parseInt(req.query.id as string);
+		const userId = getSessionUserId(req);
 		const ratings = await reviewService.getRaitingsById(reviewId);
-		const averageRating = ratings.reduce((sum, rating) => sum + rating.dataValues.rating, 0) / ratings.length;
-		res.json(averageRating);
+		let rated = false;
+		const averageRating =
+			ratings.reduce((sum, rating) => {
+				if (!rated && rating.dataValues.userId === userId) {
+					rated = true;
+				}
+				return sum + rating.dataValues.rating;
+			}, 0) / ratings.length;
+		res.json({
+			rated,
+			rating: averageRating
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+const getLike = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const reviewId = parseInt(req.query.id as string);
+		const userId = getSessionUserId(req);
+		const likes = await reviewService.getLikesById(reviewId);
+		likes.forEach((like) => {
+			if (like.dataValues.userId == userId) {
+				return res.json(true);
+			}
+		});
+		res.json(false);
 	} catch (error) {
 		next(error);
 	}
@@ -186,5 +213,6 @@ export default {
 	comments,
 	likes,
 	ratings,
-	getRating
+	getRating,
+	getLike
 };
