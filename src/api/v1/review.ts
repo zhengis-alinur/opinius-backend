@@ -16,6 +16,7 @@ router.post('/comment', reviewController.comment);
 
 router.get('/likes', reviewController.likes);
 router.get('/ratings', reviewController.ratings);
+router.get('/rating', reviewController.getRating);
 router.get('/comments', reviewController.comments);
 
 export default router;

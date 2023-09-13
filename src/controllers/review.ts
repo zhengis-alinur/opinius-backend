@@ -125,6 +125,7 @@ const comment = async (req: Request, res: Response, next: NextFunction) => {
 const comments = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const reviewId = parseInt(req.query.id as string);
+		console.log(req.query);
 		const comments = await reviewService.getCommentsById(reviewId);
 		res.json(comments);
 	} catch (error) {
@@ -145,6 +146,17 @@ const ratings = async (req: Request, res: Response, next: NextFunction) => {
 		const reviewId = parseInt(req.query.id as string);
 		const raitings = await reviewService.getRaitingsById(reviewId);
 		res.json(raitings);
+	} catch (error) {
+		next(error);
+	}
+};
+
+const getRating = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const reviewId = parseInt(req.query.id as string);
+		const ratings = await reviewService.getRaitingsById(reviewId);
+		const averageRating = ratings.reduce((sum, rating) => sum + rating.dataValues.rating, 0) / ratings.length;
+		res.json(averageRating);
 	} catch (error) {
 		next(error);
 	}
@@ -173,5 +185,6 @@ export default {
 	comment,
 	comments,
 	likes,
-	ratings
+	ratings,
+	getRating
 };

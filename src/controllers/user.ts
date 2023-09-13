@@ -11,6 +11,20 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
 	}
 };
 
+const setAvatar = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { id, imageUrl } = req.body;
+		const user = await UserModel.findByPk(id);
+		if (user) {
+			user.avatar = imageUrl;
+			user.save();
+			res.json(user);
+		}
+	} catch (error) {
+		next(error);
+	}
+};
+
 const getById = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const { id } = req.query as { id: string };
@@ -81,5 +95,6 @@ export default {
 	ratings,
 	reviews,
 	getById,
-	stats
+	stats,
+	setAvatar
 };

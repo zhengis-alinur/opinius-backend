@@ -12,5 +12,6 @@ router.get('/likes', userController.likes);
 router.get('/ratings', userController.ratings);
 router.get('/reviews', userController.reviews);
 router.get('/stats', userController.stats);
+router.post('/setAvatar', userController.setAvatar);
 
 export default router;

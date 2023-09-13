@@ -10,6 +10,7 @@ interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttri
 	lastName: string;
 	email: string;
 	password: string;
+	avatar: string;
 }
 
 const UserModel = sequelize.define<UserModel>('user', {
@@ -19,6 +20,7 @@ const UserModel = sequelize.define<UserModel>('user', {
 	firstName: { type: DataTypes.STRING, allowNull: false },
 	lastName: { type: DataTypes.STRING, allowNull: false },
 	email: { type: DataTypes.STRING, allowNull: false, unique: true },
+	avatar: { type: DataTypes.STRING },
 	password: {
 		type: DataTypes.STRING,
 		allowNull: false,
