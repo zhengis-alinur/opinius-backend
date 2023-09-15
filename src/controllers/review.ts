@@ -94,10 +94,8 @@ const rate = async (req: Request, res: Response, next: NextFunction) => {
 			});
 		}
 
-		await reviewService.rate({ rating, userId, reviewId });
-		res.status(200).json({
-			message: 'Review rated successfully!'
-		});
+		const ratedReview = await reviewService.rate({ rating, userId, reviewId });
+		res.status(200).json(ratedReview);
 	} catch (error) {
 		next(error);
 	}
@@ -155,18 +153,17 @@ const getRating = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const reviewId = parseInt(req.query.id as string);
 		const userId = getSessionUserId(req);
+		const review = await reviewService.findById(reviewId);
 		const ratings = await reviewService.getRaitingsById(reviewId);
 		let rated = false;
-		const averageRating =
-			ratings.reduce((sum, rating) => {
-				if (!rated && rating.dataValues.userId === userId) {
-					rated = true;
-				}
-				return sum + rating.dataValues.rating;
-			}, 0) / ratings.length;
+		ratings.forEach((rating) => {
+			if (!rated && rating.dataValues.userId === userId) {
+				rated = true;
+			}
+		}, 0);
 		res.json({
 			rated,
-			rating: averageRating
+			rating: review.dataValues?.rating
 		});
 	} catch (error) {
 		next(error);

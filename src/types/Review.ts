@@ -5,8 +5,10 @@ export type Review = {
 	title: string;
 	img: string;
 	objectName: string;
+	ratings: Rating[];
 	text: string;
 	grade: number;
+	rating: number;
 	image: string;
 };
 

@@ -5,7 +5,6 @@ import { Comment, Like, Rating, Review } from '../types/Review';
 import CommentModel from '../database/models/CommentModel';
 import TagModel from '../database/models/TagModel';
 import ReviewTagsModel from '../database/models/ReviewTagsModel';
-import UserModel from '../database/models/UserModel';
 
 const create = (review: Review) => ReviewModel.create(review);
 
@@ -60,15 +59,46 @@ const unLike = async (like: LikeModelType) => {
 };
 
 const like = (like: Pick<Like, 'reviewId' | 'userId'>) => LikeModel.create(like);
-const rate = (rating: Pick<Rating, 'reviewId' | 'userId' | 'rating'>) => RatingModel.create(rating);
+const rate = async (data: Pick<Rating, 'reviewId' | 'userId' | 'rating'>) => {
+	const oldRatingsCount = (
+		await RatingModel.findAll({
+			where: {
+				reviewId: data.reviewId
+			}
+		})
+	).length;
+	const review = (await ReviewModel.findOne({ where: { id: data.reviewId } }))?.dataValues;
+	if (review) {
+		const newRating = (review.rating * oldRatingsCount + data.rating) / (oldRatingsCount + 1);
+		await ReviewModel.update({ rating: newRating }, { where: { id: data.reviewId } });
+		await RatingModel.create(data);
+	}
+	return review;
+};
 const comment = (comment: Pick<Comment, 'reviewId' | 'userId' | 'comment'>) => CommentModel.create(comment);
 
-const getAll = () =>
-	ReviewModel.findAll({
-		include: {
-			model: UserModel
-		}
-	});
+const getAll = async ({ userId }: { userId?: number } = {}) => {
+	const options = {
+		include: [
+			{
+				model: LikeModel
+			},
+			{
+				model: CommentModel
+			},
+			{
+				model: RatingModel
+			}
+		],
+		where: {}
+	};
+	if (userId) {
+		options.where = {
+			userId
+		};
+	}
+	return ReviewModel.findAll(options);
+};
 
 const setTags = async (tags: string[], reviewId: number) => {
 	const tagIds: number[] = [];

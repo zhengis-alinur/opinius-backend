@@ -5,7 +5,7 @@ import Comment from './CommentModel';
 import Category from './CategoryModel';
 import Rating from './RatingModel';
 import Tag from './TagModel';
-import './LikeModel';
+import Like from './LikeModel';
 import './ReviewTagsModel';
 
 Review.belongsTo(Category, { foreignKey: 'categoryId', as: 'category' });
@@ -19,8 +19,11 @@ Comment.belongsTo(Review);
 Review.hasMany(Rating);
 Rating.belongsTo(Review);
 
-User.belongsToMany(Review, { through: 'likes' });
-Review.belongsToMany(User, { through: 'likes' });
+User.hasMany(Like);
+Like.belongsTo(User);
+
+Review.hasMany(Like);
+Like.belongsTo(Review);
 
 User.hasMany(Review);
 Review.belongsTo(User);

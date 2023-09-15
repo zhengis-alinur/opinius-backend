@@ -1,6 +1,7 @@
 import UserModel from '../database/models/UserModel';
 import { NextFunction, Request, Response } from 'express';
 import userService from '../services/user.service';
+import reviewService from '../services/review.service';
 
 const getAll = async (req: Request, res: Response, next: NextFunction) => {
 	try {
@@ -61,7 +62,7 @@ const stats = async (req: Request, res: Response, next: NextFunction) => {
 		const likes = (await userService.getLikesById(userId)).length;
 		const comments = (await userService.getCommentsById(userId)).length;
 		const ratings = (await userService.getRaitingsById(userId)).length;
-		const reviews = (await userService.getReviewsById(userId)).length;
+		const reviews = (await reviewService.getAll({ userId })).length;
 		res.json({ reviews, likes, comments, ratings });
 	} catch (error) {
 		next(error);
@@ -81,7 +82,7 @@ const ratings = async (req: Request, res: Response, next: NextFunction) => {
 const reviews = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const userId = parseInt(req.query.id as string);
-		const reviews = await userService.getReviewsById(userId);
+		const reviews = await reviewService.getAll({ userId });
 		res.json(reviews);
 	} catch (error) {
 		next(error);
