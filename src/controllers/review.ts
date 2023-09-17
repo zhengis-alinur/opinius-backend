@@ -123,7 +123,6 @@ const comment = async (req: Request, res: Response, next: NextFunction) => {
 const comments = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const reviewId = parseInt(req.query.id as string);
-		console.log(req.query);
 		const comments = await reviewService.getCommentsById(reviewId);
 		res.json(comments);
 	} catch (error) {
@@ -189,11 +188,11 @@ const getLike = async (req: Request, res: Response, next: NextFunction) => {
 const update = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const { id, ...updatedData } = req.body as Review;
-		const updated = reviewService.update(id, updatedData);
+		const updated = await reviewService.update(id, updatedData);
 		if (!updated) {
 			return res.status(404).json('Review did not updated');
 		}
-		res.json('updated');
+		res.json(updated);
 	} catch (error) {
 		next(error);
 	}

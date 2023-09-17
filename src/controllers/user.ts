@@ -89,6 +89,16 @@ const reviews = async (req: Request, res: Response, next: NextFunction) => {
 	}
 };
 
+const favorites = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const userId = parseInt(req.query.id as string);
+		const reviews = await userService.getFavorites(userId);
+		res.json(reviews);
+	} catch (error) {
+		next(error);
+	}
+};
+
 export default {
 	getAll,
 	comments,
@@ -96,6 +106,7 @@ export default {
 	ratings,
 	reviews,
 	getById,
+	favorites,
 	stats,
 	setAvatar
 };

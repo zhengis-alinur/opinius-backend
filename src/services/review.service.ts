@@ -30,11 +30,11 @@ const findById = async (reviewId: number) => {
 
 const update = async (id: number, updateData: Partial<Review>) => {
 	const review = await ReviewModel.findByPk(id);
-	let updatedReview;
 	if (review) {
-		updatedReview = await review?.update(updateData);
+		review.update(updateData);
+		await review.save();
 	}
-	return updatedReview;
+	return review;
 };
 
 const findLikeByUserId = (like: Pick<Like, 'reviewId' | 'userId'>) =>

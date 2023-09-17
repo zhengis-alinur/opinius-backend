@@ -1,8 +1,9 @@
-import { DataTypes, ModelDefined } from 'sequelize';
+import { DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import sequelize from '..';
 import { Rating } from 'types/Review';
+import UserModel from './UserModel';
 
-interface ReviewAttributes {
+interface ReviewModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>> {
 	id: number;
 	categoryId: number;
 	userId: number;
@@ -15,7 +16,7 @@ interface ReviewAttributes {
 	image: string;
 }
 
-const Review: ModelDefined<ReviewAttributes, ReviewAttributes> = sequelize.define('reviews', {
+const ReviewModel = sequelize.define('reviews', {
 	id: {
 		type: DataTypes.INTEGER,
 		primaryKey: true,
@@ -25,7 +26,7 @@ const Review: ModelDefined<ReviewAttributes, ReviewAttributes> = sequelize.defin
 	userId: DataTypes.INTEGER,
 	title: DataTypes.STRING,
 	objectName: DataTypes.STRING,
-	text: DataTypes.STRING,
+	text: DataTypes.TEXT('long'),
 	rating: {
 		type: DataTypes.FLOAT,
 		defaultValue: 0
@@ -34,4 +35,4 @@ const Review: ModelDefined<ReviewAttributes, ReviewAttributes> = sequelize.defin
 	image: DataTypes.STRING
 });
 
-export default Review;
+export default ReviewModel;
