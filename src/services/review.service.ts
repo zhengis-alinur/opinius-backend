@@ -9,23 +9,23 @@ import ReviewTagsModel from '../database/models/ReviewTagsModel';
 const create = (review: Review) => ReviewModel.create(review);
 
 const findById = async (reviewId: number) => {
-	const review = await ReviewModel.findByPk(reviewId);
-	const comments = await CommentModel.findAll({
+	const review = await ReviewModel.findOne({
 		where: {
-			reviewId
-		}
+			id: reviewId
+		},
+		include: [
+			{
+				model: CommentModel
+			},
+			{
+				model: LikeModel
+			},
+			{
+				model: RatingModel
+			}
+		]
 	});
-	const likes = await LikeModel.findAll({
-		where: {
-			reviewId
-		}
-	});
-	const ratings = await RatingModel.findAll({
-		where: {
-			reviewId
-		}
-	});
-	return { ...review, comments, likes, ratings };
+	return review;
 };
 
 const update = async (id: number, updateData: Partial<Review>) => {
@@ -69,7 +69,9 @@ const rate = async (data: Pick<Rating, 'reviewId' | 'userId' | 'rating'>) => {
 	).length;
 	const review = (await ReviewModel.findOne({ where: { id: data.reviewId } }))?.dataValues;
 	if (review) {
-		const newRating = (review.rating * oldRatingsCount + data.rating) / (oldRatingsCount + 1);
+		const newRating = parseFloat(
+			((review.rating * oldRatingsCount + data.rating) / (oldRatingsCount + 1)).toFixed(1)
+		);
 		await ReviewModel.update({ rating: newRating }, { where: { id: data.reviewId } });
 		await RatingModel.create(data);
 	}

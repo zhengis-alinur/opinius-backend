@@ -11,7 +11,7 @@ const getById = async (req: Request, res: Response, next: NextFunction) => {
 		const review = await reviewService.findById(reviewId);
 		if (review && review.dataValues?.userId) {
 			const user = await userService.getById(review.dataValues?.userId);
-			res.json({ review: { ...review, ...review.dataValues }, user });
+			res.json({ review: { ...review.dataValues }, user });
 		}
 	} catch (error) {
 		next(error);
@@ -163,7 +163,7 @@ const getRating = async (req: Request, res: Response, next: NextFunction) => {
 		}, 0);
 		res.json({
 			rated,
-			rating: review.dataValues?.rating
+			rating: review?.dataValues?.rating
 		});
 	} catch (error) {
 		next(error);
