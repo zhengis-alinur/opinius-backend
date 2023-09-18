@@ -22,9 +22,19 @@ const getFavorites = async (id: number) => {
 		where: {
 			userId: id
 		},
-		include: {
-			model: ReviewModel
-		}
+		include: [
+			{
+				model: ReviewModel,
+				include: [
+					{
+						model: CommentModel
+					},
+					{
+						model: LikeModel
+					}
+				]
+			}
+		]
 	});
 
 	return reviews;
