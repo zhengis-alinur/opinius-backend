@@ -1,17 +1,19 @@
-import { DataTypes, ModelDefined } from 'sequelize';
+import { DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import sequelize from '..';
 
-interface CommentAttributes {
+interface CommentModel extends Model<InferAttributes<CommentModel>, InferCreationAttributes<CommentModel>> {
 	comment: string;
 	reviewId: number;
 	userId: number;
 }
 
-const Comment: ModelDefined<CommentAttributes, CommentAttributes> = sequelize.define('comments', {
+const CommentModel = sequelize.define<CommentModel>('comments', {
+	reviewId: DataTypes.INTEGER,
+	userId: DataTypes.INTEGER,
 	comment: {
 		type: DataTypes.STRING,
 		allowNull: false
 	}
 });
 
-export default Comment;
+export default CommentModel;

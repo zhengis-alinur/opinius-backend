@@ -9,8 +9,8 @@ const getById = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const reviewId = parseInt(req.query.id as string);
 		const review = await reviewService.findById(reviewId);
-		if (review && review.dataValues?.userId) {
-			const user = await userService.getById(review.dataValues?.userId);
+		if (review && review.userId) {
+			const user = await userService.getById(review.userId);
 			res.json({ review: { ...review.dataValues }, user });
 		}
 	} catch (error) {
@@ -31,7 +31,7 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const { tags, ...options } = req.body;
 		const review = await reviewService.create({ userId: getSessionUserId(req), ...options });
-		await reviewService.setTags(tags, review.dataValues.id);
+		await reviewService.setTags(tags, review.id);
 		res.json({
 			message: 'Review created successfully!',
 			review
@@ -156,13 +156,13 @@ const getRating = async (req: Request, res: Response, next: NextFunction) => {
 		const ratings = await reviewService.getRaitingsById(reviewId);
 		let rated = false;
 		ratings.forEach((rating) => {
-			if (!rated && rating.dataValues.userId === userId) {
+			if (!rated && rating.userId === userId) {
 				rated = true;
 			}
 		}, 0);
 		res.json({
 			rated,
-			rating: review?.dataValues?.rating
+			rating: review?.rating
 		});
 	} catch (error) {
 		next(error);
@@ -175,7 +175,7 @@ const getLike = async (req: Request, res: Response, next: NextFunction) => {
 		const userId = getSessionUserId(req);
 		const likes = await reviewService.getLikesById(reviewId);
 		likes.forEach((like) => {
-			if (like.dataValues.userId == userId) {
+			if (like.userId == userId) {
 				return res.json(true);
 			}
 		});
@@ -187,11 +187,12 @@ const getLike = async (req: Request, res: Response, next: NextFunction) => {
 
 const update = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const { id, ...updatedData } = req.body as Review;
+		const { id, tags, ...updatedData } = req.body as Review;
 		const updated = await reviewService.update(id, updatedData);
 		if (!updated) {
 			return res.status(404).json('Review did not updated');
 		}
+		await reviewService.setTags(tags, updated.id);
 		res.json(updated);
 	} catch (error) {
 		next(error);

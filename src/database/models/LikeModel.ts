@@ -1,16 +1,14 @@
-import { DataTypes, Model, ModelDefined } from 'sequelize';
+import { DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import sequelize from '..';
 
-interface LikeAttributes {
+interface LikeModel extends Model<InferAttributes<LikeModel>, InferCreationAttributes<LikeModel>> {
 	reviewId: number;
 	userId: number;
 }
 
-const Like: ModelDefined<LikeAttributes, LikeAttributes> = sequelize.define('likes', {
+const LikeModel = sequelize.define<LikeModel>('likes', {
 	reviewId: DataTypes.INTEGER,
 	userId: DataTypes.INTEGER
 });
 
-export type LikeModelType = Model<LikeAttributes, LikeAttributes>;
-
-export default Like;
+export default LikeModel;

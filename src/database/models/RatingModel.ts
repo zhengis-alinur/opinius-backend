@@ -1,13 +1,13 @@
-import { DataTypes, ModelDefined } from 'sequelize';
+import { DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import sequelize from '..';
 
-interface RatingAttributes {
+interface RatingModel extends Model<InferAttributes<RatingModel>, InferCreationAttributes<RatingModel>> {
 	rating: number;
 	reviewId: number;
 	userId: number;
 }
 
-const Rating: ModelDefined<RatingAttributes, RatingAttributes> = sequelize.define('ratings', {
+const RatingModel = sequelize.define<RatingModel>('ratings', {
 	rating: {
 		type: DataTypes.INTEGER,
 		allowNull: false
@@ -16,4 +16,4 @@ const Rating: ModelDefined<RatingAttributes, RatingAttributes> = sequelize.defin
 	userId: DataTypes.INTEGER
 });
 
-export default Rating;
+export default RatingModel;

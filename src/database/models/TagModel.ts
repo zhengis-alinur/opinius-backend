@@ -1,11 +1,16 @@
-import { DataTypes, Model, ModelDefined } from 'sequelize';
+import { DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import sequelize from '..';
 
-interface TagAttributes {
+interface TagModel extends Model<InferAttributes<TagModel>, InferCreationAttributes<TagModel>> {
 	id: number;
 	name: string;
 }
-const Tag: ModelDefined<TagAttributes, TagAttributes> = sequelize.define('tags', {
+const TagModel = sequelize.define<TagModel>('tags', {
+	id: {
+		type: DataTypes.INTEGER,
+		autoIncrement: true,
+		primaryKey: true
+	},
 	name: {
 		type: DataTypes.STRING,
 		allowNull: false,
@@ -13,6 +18,4 @@ const Tag: ModelDefined<TagAttributes, TagAttributes> = sequelize.define('tags',
 	}
 });
 
-export type LikeModelType = Model<TagAttributes, TagAttributes>;
-
-export default Tag;
+export default TagModel;

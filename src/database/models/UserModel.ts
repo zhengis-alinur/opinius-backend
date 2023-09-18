@@ -9,6 +9,9 @@ interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttri
 	firstName: string;
 	lastName: string;
 	email: string;
+	likesCount: number;
+	commentsCount: number;
+	ratedCount: number;
 	password: string;
 	avatar: string;
 }
@@ -20,6 +23,18 @@ const UserModel = sequelize.define<UserModel>('user', {
 	firstName: { type: DataTypes.STRING, allowNull: false },
 	lastName: { type: DataTypes.STRING, allowNull: false },
 	email: { type: DataTypes.STRING, allowNull: false, unique: true },
+	likesCount: {
+		type: DataTypes.INTEGER,
+		defaultValue: 0
+	},
+	commentsCount: {
+		type: DataTypes.INTEGER,
+		defaultValue: 0
+	},
+	ratedCount: {
+		type: DataTypes.INTEGER,
+		defaultValue: 0
+	},
 	avatar: { type: DataTypes.STRING },
 	password: {
 		type: DataTypes.STRING,

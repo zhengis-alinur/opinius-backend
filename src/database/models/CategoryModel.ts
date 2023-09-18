@@ -1,11 +1,11 @@
-import { DataTypes, ModelDefined } from 'sequelize';
+import { DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import sequelize from '..';
 
-interface CategoryAttributes {
+interface CategoryModel extends Model<InferAttributes<CategoryModel>, InferCreationAttributes<CategoryModel>> {
 	name: string;
 }
 
-const Category: ModelDefined<CategoryAttributes, CategoryAttributes> = sequelize.define('categories', {
+const CategoryModel = sequelize.define<CategoryModel>('categories', {
 	name: {
 		type: DataTypes.STRING,
 		allowNull: false,
@@ -13,4 +13,4 @@ const Category: ModelDefined<CategoryAttributes, CategoryAttributes> = sequelize
 	}
 });
 
-export default Category;
+export default CategoryModel;

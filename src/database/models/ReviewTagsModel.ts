@@ -1,14 +1,14 @@
-import { DataTypes, ModelDefined } from 'sequelize';
+import { DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import sequelize from '..';
 
-interface ReviewTagsAttributes {
+interface ReviewTagsModel extends Model<InferAttributes<ReviewTagsModel>, InferCreationAttributes<ReviewTagsModel>> {
 	reviewId: number;
 	tagId: number;
 }
 
-const ReviewTags: ModelDefined<ReviewTagsAttributes, ReviewTagsAttributes> = sequelize.define('review_tags', {
+const ReviewTagsModel = sequelize.define<ReviewTagsModel>('review_tags', {
 	reviewId: DataTypes.INTEGER,
 	tagId: DataTypes.INTEGER
 });
 
-export default ReviewTags;
+export default ReviewTagsModel;

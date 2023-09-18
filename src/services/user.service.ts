@@ -1,11 +1,10 @@
-import { User } from 'types/User';
 import UserModel from '../database/models/UserModel';
 import LikeModel from '../database/models/LikeModel';
 import CommentModel from '../database/models/CommentModel';
 import RatingModel from '../database/models/RatingModel';
 import ReviewModel from '../database/models/ReviewModel';
 
-const create = async (user: User) => {
+const create = async (user: UserModel) => {
 	await UserModel.create(user);
 };
 

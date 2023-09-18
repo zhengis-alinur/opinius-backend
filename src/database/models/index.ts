@@ -28,9 +28,6 @@ Like.belongsTo(Review);
 User.hasMany(Review);
 Review.belongsTo(User);
 
-User.hasMany(Comment);
-Comment.belongsTo(User);
-
 User.hasMany(Rating);
 Rating.belongsTo(User);
 

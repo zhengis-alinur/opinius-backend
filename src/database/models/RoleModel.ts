@@ -1,11 +1,11 @@
-import { DataTypes, ModelDefined } from 'sequelize';
+import { DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import sequelize from '..';
 
-interface RoleAttributes {
+interface RoleModel extends Model<InferAttributes<RoleModel>, InferCreationAttributes<RoleModel>> {
 	name: string;
 }
 
-const Role: ModelDefined<RoleAttributes, RoleAttributes> = sequelize.define('roles', {
+const RoleModel = sequelize.define<RoleModel>('roles', {
 	name: {
 		type: DataTypes.STRING,
 		allowNull: false,
@@ -13,4 +13,4 @@ const Role: ModelDefined<RoleAttributes, RoleAttributes> = sequelize.define('rol
 	}
 });
 
-export default Role;
+export default RoleModel;
