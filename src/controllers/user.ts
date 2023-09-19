@@ -2,10 +2,15 @@ import UserModel from '../database/models/UserModel';
 import { NextFunction, Request, Response } from 'express';
 import userService from '../services/user.service';
 import reviewService from '../services/review.service';
+import ReviewModel from '../database/models/ReviewModel';
 
 const getAll = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const users = await UserModel.findAll({});
+		const users = await UserModel.findAll({
+			include: {
+				model: ReviewModel
+			}
+		});
 		res.json(users);
 	} catch (error) {
 		next(error);

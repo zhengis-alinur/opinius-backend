@@ -8,6 +8,12 @@ import ReviewTagsModel from '../database/models/ReviewTagsModel';
 import UserModel from '../database/models/UserModel';
 
 const create = (review: Review) => ReviewModel.create(review);
+const deleteReviews = (ids: number[]) =>
+	ReviewModel.destroy({
+		where: {
+			id: ids
+		}
+	});
 
 const findById = async (reviewId: number) => {
 	const review = await ReviewModel.findOne({
@@ -185,5 +191,6 @@ export default {
 	getLikesById,
 	getCommentsById,
 	getRaitingsById,
+	deleteReviews,
 	update
 };

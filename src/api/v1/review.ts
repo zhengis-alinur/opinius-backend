@@ -12,6 +12,7 @@ router.use(passport.authenticate('jwt', { session: false }));
 
 router.post('/create', reviewController.create);
 router.post('/update', reviewController.update);
+router.post('/delete', reviewController.deleteReviews);
 
 router.post('/like', reviewController.like);
 router.post('/rate', reviewController.rate);

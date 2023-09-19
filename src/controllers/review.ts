@@ -41,6 +41,18 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
 	}
 };
 
+const deleteReviews = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { ids } = req.body;
+		await reviewService.deleteReviews(ids);
+		res.json({
+			message: 'Reviews deleted successfully!'
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
 const like = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const userId = getSessionUserId(req);
@@ -202,6 +214,7 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
 export default {
 	create,
 	update,
+	deleteReviews,
 	getAll,
 	getById,
 	like,
