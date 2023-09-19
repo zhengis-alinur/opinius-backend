@@ -6,7 +6,7 @@ const schemas: Record<string, ObjectSchema> = {
 		password: Joi.string().required()
 	}),
 	signup: Joi.object({
-		roleId: Joi.number().required(),
+		roleId: Joi.number(),
 		firstName: Joi.string().required(),
 		lastName: Joi.string().required(),
 		username: Joi.string().required(),

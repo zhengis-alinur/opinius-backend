@@ -18,7 +18,7 @@ interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttri
 
 const UserModel = sequelize.define<UserModel>('user', {
 	id: { type: DataTypes.INTEGER, allowNull: false, autoIncrement: true, primaryKey: true },
-	roleId: { type: DataTypes.INTEGER, allowNull: false },
+	roleId: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
 	username: { type: DataTypes.STRING, allowNull: false },
 	firstName: { type: DataTypes.STRING, allowNull: false },
 	lastName: { type: DataTypes.STRING, allowNull: false },
