@@ -20,7 +20,8 @@ const getById = async (req: Request, res: Response, next: NextFunction) => {
 
 const getAll = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const reviews = await reviewService.getAll({});
+		const { keyword } = req.query as { keyword: string };
+		const reviews = await reviewService.getAll({ keyword });
 		res.json(reviews);
 	} catch (error) {
 		next(error);

@@ -6,6 +6,7 @@ import CommentModel from '../database/models/CommentModel';
 import TagModel from '../database/models/TagModel';
 import ReviewTagsModel from '../database/models/ReviewTagsModel';
 import UserModel from '../database/models/UserModel';
+import { Op, Sequelize } from 'sequelize';
 
 const create = (review: Review) => ReviewModel.create(review);
 const deleteReviews = (ids: number[]) =>
@@ -123,13 +124,34 @@ const comment = async (comment: Pick<Comment, 'reviewId' | 'userId' | 'comment'>
 	CommentModel.create(comment);
 };
 
-const getAll = async ({ id, sortBy = 'title', order = 'ASC' }: { id?: number; sortBy?: string; order?: string }) => {
+const getAll = async ({
+	id,
+	keyword,
+	sortBy = 'title',
+	order = 'ASC'
+}: {
+	id?: number;
+	keyword?: string;
+	sortBy?: string;
+	order?: string;
+}) => {
 	const options: { where: Record<string, any> } = {
 		where: {}
 	};
 
 	if (id) {
 		options.where = { userId: id };
+	}
+
+	if (keyword) {
+		options.where = {
+			...options.where,
+			[Op.or]: [
+				Sequelize.literal(`MATCH(title) AGAINST(:keyword IN BOOLEAN MODE)`),
+				Sequelize.literal(`MATCH(text) AGAINST(:keyword IN BOOLEAN MODE)`),
+				Sequelize.literal(`MATCH(objectName) AGAINST(:keyword IN BOOLEAN MODE)`)
+			]
+		};
 	}
 
 	return ReviewModel.findAll({
@@ -147,8 +169,9 @@ const getAll = async ({ id, sortBy = 'title', order = 'ASC' }: { id?: number; so
 				model: TagModel
 			}
 		],
-		order: [[sortBy, order]],
-		...options
+		...options,
+		replacements: { keyword },
+		order: [[sortBy, order]]
 	});
 };
 
