@@ -11,6 +11,15 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
 	}
 };
 
+const stats = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const tags = await tagService.getStats();
+		res.json(tags);
+	} catch (error) {
+		next(error);
+	}
+};
+
 const create = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const tag = await tagService.create(req.body as Tag);
@@ -24,6 +33,7 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 export default {
-	getAll: [getAll],
-	create: [create]
+	getAll,
+	create,
+	stats
 };
