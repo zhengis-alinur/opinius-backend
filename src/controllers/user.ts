@@ -48,6 +48,16 @@ const block = async (req: Request, res: Response, next: NextFunction) => {
 	}
 };
 
+const unBblock = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { ids } = req.body;
+		await userService.unBblock(ids);
+		res.json('Users updated successfully');
+	} catch (error) {
+		next(error);
+	}
+};
+
 const setAdmin = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const { ids } = req.body;
@@ -144,6 +154,7 @@ export default {
 	stats,
 	deleteUser,
 	block,
+	unBblock,
 	setAdmin,
 	setAvatar
 };

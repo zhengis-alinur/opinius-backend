@@ -18,15 +18,16 @@ const getAll = async ({ sortBy = 'username', order = 'ASC' }: { sortBy?: string;
 	});
 
 const findUserByEmail = (email: string) => UserModel.findOne({ where: { email } });
+
 const getById = (id: number) => UserModel.findOne({ where: { id } });
 
 const getLikesById = (userId: number) => LikeModel.findAll({ where: { userId } });
+
 const block = async (ids: number[]) => {
-	const users = await UserModel.findAll({ where: { id: ids } });
-	users.forEach((user) => {
-		user.blocked = !user.blocked;
-		user.save();
-	});
+	await UserModel.update({ blocked: true }, { where: { id: ids, blocked: false } });
+};
+const unBblock = async (ids: number[]) => {
+	await UserModel.update({ blocked: false }, { where: { id: ids, blocked: true } });
 };
 const setAdmin = async (ids: number[]) => {
 	const users = await UserModel.findAll({ where: { id: ids } });
@@ -65,6 +66,7 @@ export default {
 	create,
 	getAll,
 	block,
+	unBblock,
 	setAdmin,
 	getById,
 	findUserByEmail,
