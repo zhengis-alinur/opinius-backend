@@ -123,8 +123,16 @@ const comment = async (comment: Pick<Comment, 'reviewId' | 'userId' | 'comment'>
 	CommentModel.create(comment);
 };
 
-const getAll = async ({ userId }: { userId?: number } = {}) => {
-	const options = {
+const getAll = async ({ id, sortBy = 'title', order = 'ASC' }: { id?: number; sortBy?: string; order?: string }) => {
+	const options: { where: Record<string, any> } = {
+		where: {}
+	};
+
+	if (id) {
+		options.where = { userId: id };
+	}
+
+	return ReviewModel.findAll({
 		include: [
 			{
 				model: LikeModel
@@ -139,14 +147,9 @@ const getAll = async ({ userId }: { userId?: number } = {}) => {
 				model: TagModel
 			}
 		],
-		where: {}
-	};
-	if (userId) {
-		options.where = {
-			userId
-		};
-	}
-	return ReviewModel.findAll(options);
+		order: [[sortBy, order]],
+		...options
+	});
 };
 
 const setTags = async (tags: string[], reviewId: number) => {

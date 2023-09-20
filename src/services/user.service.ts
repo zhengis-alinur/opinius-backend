@@ -7,6 +7,15 @@ import ReviewModel from '../database/models/ReviewModel';
 const create = async (user: UserModel) => {
 	await UserModel.create(user);
 };
+const getAll = async ({ sortBy = 'username', order = 'ASC' }: { sortBy?: string; order?: string }) =>
+	UserModel.findAll({
+		include: [
+			{
+				model: ReviewModel
+			}
+		],
+		order: [[sortBy, order]]
+	});
 
 const findUserByEmail = (email: string) => UserModel.findOne({ where: { email } });
 const getById = (id: number) => UserModel.findOne({ where: { id } });
@@ -54,6 +63,7 @@ const getFavorites = async (id: number) => {
 };
 export default {
 	create,
+	getAll,
 	block,
 	setAdmin,
 	getById,

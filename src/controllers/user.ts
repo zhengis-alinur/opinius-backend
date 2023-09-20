@@ -2,15 +2,12 @@ import UserModel from '../database/models/UserModel';
 import { NextFunction, Request, Response } from 'express';
 import userService from '../services/user.service';
 import reviewService from '../services/review.service';
-import ReviewModel from '../database/models/ReviewModel';
 
 const getAll = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const users = await UserModel.findAll({
-			include: {
-				model: ReviewModel
-			}
-		});
+		const sortBy = String(req.query.sortBy);
+		const order = String(req.query.order);
+		const users = await userService.getAll({ sortBy, order });
 		res.json(users);
 	} catch (error) {
 		next(error);
@@ -93,11 +90,11 @@ const likes = async (req: Request, res: Response, next: NextFunction) => {
 
 const stats = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const userId = parseInt(req.query.id as string);
-		const likes = (await userService.getLikesById(userId)).length;
-		const comments = (await userService.getCommentsById(userId)).length;
-		const ratings = (await userService.getRaitingsById(userId)).length;
-		const reviews = (await reviewService.getAll({ userId })).length;
+		const id = parseInt(req.query.id as string);
+		const likes = (await userService.getLikesById(id)).length;
+		const comments = (await userService.getCommentsById(id)).length;
+		const ratings = (await userService.getRaitingsById(id)).length;
+		const reviews = (await reviewService.getAll({ id })).length;
 		res.json({ reviews, likes, comments, ratings });
 	} catch (error) {
 		next(error);
@@ -116,8 +113,10 @@ const ratings = async (req: Request, res: Response, next: NextFunction) => {
 
 const reviews = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const userId = parseInt(req.query.id as string);
-		const reviews = await reviewService.getAll({ userId });
+		const id = parseInt(req.query.id as string);
+		const sortBy = String(req.query.sortBy);
+		const order = String(req.query.order);
+		const reviews = await reviewService.getAll({ id, sortBy, order });
 		res.json(reviews);
 	} catch (error) {
 		next(error);

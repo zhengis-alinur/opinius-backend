@@ -20,7 +20,7 @@ const getById = async (req: Request, res: Response, next: NextFunction) => {
 
 const getAll = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const reviews = await reviewService.getAll();
+		const reviews = await reviewService.getAll({});
 		res.json(reviews);
 	} catch (error) {
 		next(error);
@@ -30,6 +30,7 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
 const create = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const { tags, ...options } = req.body;
+		console.log(options);
 		const review = await reviewService.create({ userId: getSessionUserId(req), ...options });
 		await reviewService.setTags(tags, review.id);
 		res.json({
