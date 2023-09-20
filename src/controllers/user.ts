@@ -30,6 +30,15 @@ const setAvatar = async (req: Request, res: Response, next: NextFunction) => {
 		next(error);
 	}
 };
+const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { ids } = req.body;
+		await UserModel.destroy({ where: { id: ids } });
+		res.json('Users successfully deleted');
+	} catch (error) {
+		next(error);
+	}
+};
 
 const getById = async (req: Request, res: Response, next: NextFunction) => {
 	try {
@@ -113,5 +122,6 @@ export default {
 	getById,
 	favorites,
 	stats,
+	deleteUser,
 	setAvatar
 };
