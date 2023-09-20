@@ -68,6 +68,16 @@ const setAdmin = async (req: Request, res: Response, next: NextFunction) => {
 	}
 };
 
+const setUser = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { ids } = req.body;
+		await userService.setUser(ids);
+		res.json('Users updated successfully');
+	} catch (error) {
+		next(error);
+	}
+};
+
 const getById = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const { id } = req.query as { id: string };
@@ -156,5 +166,6 @@ export default {
 	block,
 	unBblock,
 	setAdmin,
+	setUser,
 	setAvatar
 };

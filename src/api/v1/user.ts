@@ -17,6 +17,7 @@ router.post('/delete', userController.deleteUser);
 router.post('/block', userController.block);
 router.post('/unblock', userController.unBblock);
 router.post('/setAdmin', userController.setAdmin);
+router.post('/setUser', userController.setUser);
 router.post('/setAvatar', userController.setAvatar);
 
 export default router;

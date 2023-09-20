@@ -29,12 +29,13 @@ const block = async (ids: number[]) => {
 const unBblock = async (ids: number[]) => {
 	await UserModel.update({ blocked: false }, { where: { id: ids, blocked: true } });
 };
+
 const setAdmin = async (ids: number[]) => {
-	const users = await UserModel.findAll({ where: { id: ids } });
-	users.forEach((user) => {
-		user.roleId = user.roleId === 2 ? 1 : 2;
-		user.save();
-	});
+	await UserModel.update({ roleId: 2 }, { where: { id: ids, roleId: 1 } });
+};
+
+const setUser = async (ids: number[]) => {
+	await UserModel.update({ roleId: 1 }, { where: { id: ids, roleId: 2 } });
 };
 
 const getCommentsById = (userId: number) => CommentModel.findAll({ where: { userId } });
@@ -68,6 +69,7 @@ export default {
 	block,
 	unBblock,
 	setAdmin,
+	setUser,
 	getById,
 	findUserByEmail,
 	getLikesById,
