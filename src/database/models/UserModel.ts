@@ -5,6 +5,7 @@ import sequelize from '..';
 interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>> {
 	id: number;
 	roleId: number;
+	blocked: boolean;
 	username: string;
 	firstName: string;
 	lastName: string;
@@ -19,6 +20,7 @@ interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttri
 const UserModel = sequelize.define<UserModel>('user', {
 	id: { type: DataTypes.INTEGER, allowNull: false, autoIncrement: true, primaryKey: true },
 	roleId: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
+	blocked: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
 	username: { type: DataTypes.STRING, allowNull: false },
 	firstName: { type: DataTypes.STRING, allowNull: false },
 	lastName: { type: DataTypes.STRING, allowNull: false },

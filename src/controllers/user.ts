@@ -30,11 +30,32 @@ const setAvatar = async (req: Request, res: Response, next: NextFunction) => {
 		next(error);
 	}
 };
+
 const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const { ids } = req.body;
 		await UserModel.destroy({ where: { id: ids } });
 		res.json('Users successfully deleted');
+	} catch (error) {
+		next(error);
+	}
+};
+
+const block = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { ids } = req.body;
+		await userService.block(ids);
+		res.json('Users updated successfully');
+	} catch (error) {
+		next(error);
+	}
+};
+
+const setAdmin = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { ids } = req.body;
+		await userService.setAdmin(ids);
+		res.json('Users updated successfully');
 	} catch (error) {
 		next(error);
 	}
@@ -123,5 +144,7 @@ export default {
 	favorites,
 	stats,
 	deleteUser,
+	block,
+	setAdmin,
 	setAvatar
 };

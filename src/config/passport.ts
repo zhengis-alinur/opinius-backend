@@ -36,7 +36,7 @@ passport.use(
 		async (jwt_payload, done) => {
 			try {
 				const user = await userService.findUserByEmail(jwt_payload.email);
-				if (user) {
+				if (user && !user.blocked) {
 					return done(null, user);
 				} else {
 					return done(null, false);

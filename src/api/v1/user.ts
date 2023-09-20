@@ -14,6 +14,8 @@ router.get('/stats', userController.stats);
 
 router.use(passport.authenticate('jwt', { session: false }));
 router.post('/delete', userController.deleteUser);
+router.post('/block', userController.block);
+router.post('/setAdmin', userController.setAdmin);
 router.post('/setAvatar', userController.setAvatar);
 
 export default router;
