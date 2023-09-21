@@ -4,6 +4,7 @@ import passport from 'passport';
 const router = express.Router();
 
 router.get('/getAll', reviewController.getAll);
+router.get('/best', reviewController.best);
 router.get('/', reviewController.getById);
 router.get('/likes', reviewController.likes);
 router.get('/ratings', reviewController.ratings);

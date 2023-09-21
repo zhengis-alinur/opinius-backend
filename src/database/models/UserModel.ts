@@ -1,8 +1,18 @@
-import { DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
+import { DataTypes, InferAttributes, Model } from 'sequelize';
 import bcrypt from 'bcrypt';
 import sequelize from '..';
 
-interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>> {
+export interface UserCreateAttributes {
+	username?: string;
+	firstName?: string;
+	lastName?: string;
+	email?: string;
+	password?: string;
+	avatar?: string;
+	googleId?: string;
+}
+
+interface UserModel extends Model<InferAttributes<UserModel>, UserCreateAttributes> {
 	id: number;
 	roleId: number;
 	blocked: boolean;
@@ -10,6 +20,7 @@ interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttri
 	firstName: string;
 	lastName: string;
 	email: string;
+	googleId: string;
 	likesCount: number;
 	commentsCount: number;
 	ratedCount: number;
@@ -19,28 +30,32 @@ interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttri
 
 const UserModel = sequelize.define<UserModel>('user', {
 	id: { type: DataTypes.INTEGER, allowNull: false, autoIncrement: true, primaryKey: true },
-	roleId: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
-	blocked: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
-	username: { type: DataTypes.STRING, allowNull: false },
-	firstName: { type: DataTypes.STRING, allowNull: false },
-	lastName: { type: DataTypes.STRING, allowNull: false },
+	roleId: { type: DataTypes.INTEGER, allowNull: true, defaultValue: 1 },
+	blocked: { type: DataTypes.BOOLEAN, allowNull: true, defaultValue: false },
+	username: { type: DataTypes.STRING, allowNull: true },
+	firstName: { type: DataTypes.STRING, allowNull: true },
+	lastName: { type: DataTypes.STRING, allowNull: true },
 	email: { type: DataTypes.STRING, allowNull: false, unique: true },
+	googleId: { type: DataTypes.STRING, allowNull: true },
 	likesCount: {
 		type: DataTypes.INTEGER,
+		allowNull: true,
 		defaultValue: 0
 	},
 	commentsCount: {
 		type: DataTypes.INTEGER,
+		allowNull: true,
 		defaultValue: 0
 	},
 	ratedCount: {
 		type: DataTypes.INTEGER,
+		allowNull: true,
 		defaultValue: 0
 	},
-	avatar: { type: DataTypes.STRING },
+	avatar: { type: DataTypes.STRING, allowNull: true },
 	password: {
 		type: DataTypes.STRING,
-		allowNull: false,
+		allowNull: true,
 		set(value: string) {
 			const hash = bcrypt.hashSync(value, 10);
 			this.setDataValue('password', hash);

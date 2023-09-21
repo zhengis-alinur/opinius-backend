@@ -17,9 +17,10 @@ export const errorHandler = (error: Error, req: Request, res: Response, next: Ne
 	next(error);
 };
 
-export const checkAuthenticated = (req: Request, res: Response, next: NextFunction) => {
-	if (req.isAuthenticated()) {
-		return next();
+export const isUserAuthenticated = (req: Request, res: Response, next: NextFunction) => {
+	if (req.user) {
+		next();
+	} else {
+		res.status(401).send('You must login first!');
 	}
-	return res.status(403).json('You are not authorized!');
 };

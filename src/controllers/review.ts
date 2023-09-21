@@ -27,6 +27,14 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
 		next(error);
 	}
 };
+const best = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const reviews = await reviewService.getAll({ order: 'DESC', sortBy: 'rating', limit: 12 });
+		res.json(reviews);
+	} catch (error) {
+		next(error);
+	}
+};
 
 const create = async (req: Request, res: Response, next: NextFunction) => {
 	try {
@@ -218,6 +226,7 @@ export default {
 	update,
 	deleteReviews,
 	getAll,
+	best,
 	getById,
 	like,
 	rate,

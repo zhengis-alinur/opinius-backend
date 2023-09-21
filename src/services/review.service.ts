@@ -128,11 +128,13 @@ const getAll = async ({
 	id,
 	keyword,
 	sortBy = 'title',
+	limit,
 	order = 'ASC'
 }: {
 	id?: number;
 	keyword?: string;
 	sortBy?: string;
+	limit?: number;
 	order?: string;
 }) => {
 	const options: { where: Record<string, any> } = {
@@ -171,7 +173,8 @@ const getAll = async ({
 		],
 		...options,
 		replacements: { keyword },
-		order: [[sortBy, order]]
+		order: [[sortBy, order]],
+		limit
 	});
 };
 
