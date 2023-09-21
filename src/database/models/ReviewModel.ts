@@ -13,24 +13,29 @@ interface ReviewModel extends Model<InferAttributes<ReviewModel>, InferCreationA
 	image: string;
 }
 
-const ReviewModel = sequelize.define<ReviewModel>('reviews', {
-	id: {
-		type: DataTypes.INTEGER,
-		primaryKey: true,
-		autoIncrement: true
-	},
-	categoryId: DataTypes.INTEGER,
-	userId: DataTypes.INTEGER,
+const ReviewModel = sequelize.define<ReviewModel>(
+	'reviews',
+	{
+		id: {
+			type: DataTypes.INTEGER,
+			primaryKey: true,
+			autoIncrement: true
+		},
+		categoryId: DataTypes.INTEGER,
+		userId: DataTypes.INTEGER,
 
-	title: DataTypes.STRING,
-	objectName: DataTypes.STRING,
-	text: DataTypes.TEXT('long'),
-	rating: {
-		type: DataTypes.FLOAT,
-		defaultValue: 0
+		title: DataTypes.STRING,
+		objectName: DataTypes.STRING,
+		text: DataTypes.TEXT('long'),
+		rating: {
+			type: DataTypes.FLOAT,
+			defaultValue: 0
+		},
+		grade: DataTypes.INTEGER,
+		image: DataTypes.STRING
 	},
-	grade: DataTypes.INTEGER,
-	image: DataTypes.STRING
-});
-
+	{
+		indexes: [{ type: 'FULLTEXT', name: 'text_idx', fields: ['title', 'objectName', 'text'] }]
+	}
+);
 export default ReviewModel;
